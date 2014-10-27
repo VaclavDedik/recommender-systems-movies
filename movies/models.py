@@ -42,7 +42,7 @@ class AbstractModel(object):
 
 
 class BaseModel(AbstractModel):
-    def __init__(self, n_movies=3952, n_users=6040, n_features=8,
+    def __init__(self, n_movies=3952, n_users=6040, n_features=9,
                  maxiter=100, l=8):
         self.n_movies = n_movies
         self.n_users = n_users
