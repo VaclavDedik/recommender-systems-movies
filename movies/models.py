@@ -6,7 +6,7 @@ from utils import rmse
 
 
 class AbstractModel(object):
-    def __init__(self, n_movies=3952, n_users=6040, n_features=5):
+    def __init__(self, n_movies=3952, n_users=6040, n_features=1):
         self.n_movies = n_movies
         self.n_users = n_users
         self.n_features = n_features
@@ -42,8 +42,8 @@ class AbstractModel(object):
 
 
 class BaseModel(AbstractModel):
-    def __init__(self, n_movies=3952, n_users=6040, n_features=9,
-                 maxiter=100, l=8):
+    def __init__(self, n_movies=3952, n_users=6040, n_features=1,
+                 maxiter=50, l=0):
         self.n_movies = n_movies
         self.n_users = n_users
         self.n_features = n_features
