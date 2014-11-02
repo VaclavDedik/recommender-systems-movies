@@ -2,7 +2,7 @@ import numpy as np
 
 from scipy import optimize
 
-from utils import rmse
+from utils import rmse, project_data
 
 
 class AbstractModel(object):
@@ -43,12 +43,13 @@ class AbstractModel(object):
 
 class BaseModel(AbstractModel):
     def __init__(self, n_movies=3952, n_users=6040, n_features=1,
-                 maxiter=50, l=0):
+                 maxiter=50, l=0, d=None):
         self.n_movies = n_movies
         self.n_users = n_users
         self.n_features = n_features
         self.maxiter = maxiter
         self.l = l
+        self.d = d
 
     def cost_func(self, params, Y, R):
         # Helper params
@@ -80,14 +81,28 @@ class BaseModel(AbstractModel):
 
         return self.to_params(X_grad, Theta_grad)
 
+    def reduce_dimensions(self, d=None):
+        if not d and not self.d:
+            return
+        elif not d:
+            d = self.d
+        X_Theta = np.concatenate([self.X, self.Theta])
+        X_Theta_d = project_data(X_Theta, d)
+        self.X = X_Theta_d[:self.n_movies]
+        self.Theta = X_Theta_d[self.n_movies:]
+
+        self.predictions = np.dot(self.X, np.transpose(self.Theta))
+
     def train(self, data):
         X, Theta, Y, R = self.init_data(data)
         params = self.to_params(X, Theta)
         result = optimize.fmin_cg(self.cost_func, params,
                                   fprime=self.grad_func,
                                   args=(Y, R), maxiter=self.maxiter)
-        X_train, Theta_train = self.from_params(result)
-        self.predictions = np.dot(X_train, np.transpose(Theta_train))
+        self.X, self.Theta = self.from_params(result)
+        self.reduce_dimensions()
+
+        self.predictions = np.dot(self.X, np.transpose(self.Theta))
 
     def test(self, data):
         predicted = []

@@ -1,17 +1,11 @@
 import random
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 
 def load_data(filename):
-    """
-    Returns a list of data points.
-    Each data point is a list representing:
-        [movie, user, rating]
-    """
-    with open(filename) as f:
-        lines = f.readlines()
-    lines.pop(0)  # pop the header
-    return [map(int, line.split(',')) for line in lines]
+    return np.array(pd.read_csv(filename))
 
 
 def rmse(a, b):
@@ -51,7 +45,7 @@ def get_learning_curves(model, train, test):
     return learning_curves
 
 
-def plot_learning_curves(learning_curves):
+def plot_learning_curves(learning_curves, title=None, axis=[0, 100, 0.5, 2.1]):
     print "Plotting learning curves..."
     plt.plot([y for _, _, y in learning_curves],
              [x for x, _, _ in learning_curves], label="Train set")
@@ -59,5 +53,40 @@ def plot_learning_curves(learning_curves):
              [x for _, x, _ in learning_curves], label="Test set")
     plt.ylabel("RMSE")
     plt.xlabel("% of training data")
+    if title:
+        plt.title(title)
+    if axis:
+        plt.axis(axis)
     plt.legend()
     plt.show()
+
+
+def plot_movies(X, movies, picked_movies, title=None):
+    print "Plotting movies..."
+    processed_movies = []
+    for id_, title, _ in movies:
+        if id_ in picked_movies:
+            processed_movies.append((id_ - 1, title))
+
+    x = [X[i, 0] for i, _ in processed_movies]
+    y = [X[i, 1] for i, _ in processed_movies]
+    plt.plot(x, y, "ro")
+    for i, title in processed_movies:
+        x_shift = X[i, 0] + (max(x) - min(x))/20
+        y_shift = X[i, 1] + (max(y) - min(y))/20
+        plt.annotate(title, xy=(X[i, 0], X[i, 1]),
+                     xytext=(x_shift, y_shift),
+                     arrowprops=dict(arrowstyle="-"))
+
+    if title:
+        plt.title(title)
+    plt.show()
+
+
+def project_data(X, k):
+    m = len(X)
+    cov_matrix = np.dot(np.transpose(X), X)/m
+    U, _, _ = np.linalg.svd(cov_matrix)
+    U_r = U[:, :k]
+
+    return np.dot(X, U_r)
