@@ -7,8 +7,8 @@ if __name__ == "__main__":
     test = utils.load_data("ratings-test.csv")
 
     # Configuration
-    features = 3
-    l = 2
+    features = 9
+    l = 8
     maxiter = 100
     title = "features=%s, lambda=%s, maxiter=%s" % (features, l, maxiter)
     print "Training the baseline predictor on %s data points..." % len(train)
@@ -23,7 +23,27 @@ if __name__ == "__main__":
 
     # Plot movies visualization
     movies = utils.load_data("movies.csv")
-    picked_movies = [356, 1198, 1291, 1721, 2115, 2116, 3535]
+    picked_movies = [
+        1,     # Toy Story
+        6,     # Heat
+        #260,   # Star Wars Episode IV
+        356,   # Forrest Gump
+        364,   # Lion King, The
+        858,   # Godfather
+        924,   # 2001: A Space Odyssey
+        1198,  # Raiders of the Lost Arch
+        1206,  # Clockwork Orange, A
+        #1219,  # Psycho
+        1221,  # Godfather II
+        1291,  # Indiana Jones and the Last Crusade
+        1721,  # Titanic
+        2115,  # Indiana Jones and the Last Crusade
+        2116,  # Lord of the Rings, The
+        2571,  # Matrix
+        2858,  # American Beauty
+        3527,  # Predator
+        3535,  # American Psycho
+    ]
     utils.plot_movies(m.X, movies, picked_movies, title=title)
 
     # Learning curves

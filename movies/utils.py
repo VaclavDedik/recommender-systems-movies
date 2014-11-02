@@ -64,17 +64,17 @@ def plot_learning_curves(learning_curves, title=None, axis=[0, 100, 0.5, 2.1]):
 def plot_movies(X, movies, picked_movies, title=None):
     print "Plotting movies..."
     processed_movies = []
-    for id_, title, _ in movies:
-        if id_ in picked_movies:
-            processed_movies.append((id_ - 1, title))
+    for i, t, _ in movies:
+        if i in picked_movies:
+            processed_movies.append((i - 1, t))
 
     x = [X[i, 0] for i, _ in processed_movies]
     y = [X[i, 1] for i, _ in processed_movies]
     plt.plot(x, y, "ro")
-    for i, title in processed_movies:
+    for i, t in processed_movies:
         x_shift = X[i, 0] + (max(x) - min(x))/20
         y_shift = X[i, 1] + (max(y) - min(y))/20
-        plt.annotate(title, xy=(X[i, 0], X[i, 1]),
+        plt.annotate(t, xy=(X[i, 0], X[i, 1]),
                      xytext=(x_shift, y_shift),
                      arrowprops=dict(arrowstyle="-"))
 
