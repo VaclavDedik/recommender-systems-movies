@@ -61,7 +61,7 @@ class BaseModel(AbstractModel):
         cost = np.sum(rmse) / 2.0
 
         # Regularization
-        cost += self.l/2 * np.sum(X ** 2) + self.l/2 * np.sum(Theta ** 2)
+        cost += self.l/2.0 * np.sum(X ** 2) + self.l/2.0 * np.sum(Theta ** 2)
 
         return cost
 

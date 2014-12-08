@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     # Configuration
     features = 9
-    l = 8
+    l = 0
     maxiter = 100
     title = "features=%s, lambda=%s, maxiter=%s" % (features, l, maxiter)
     print "Training the baseline predictor on %s data points..." % len(train)
@@ -24,27 +24,31 @@ if __name__ == "__main__":
     # Plot movies visualization
     movies = utils.load_data("movies.csv")
     picked_movies = [
-        1,     # Toy Story
-        6,     # Heat
-        #260,   # Star Wars Episode IV
         356,   # Forrest Gump
-        364,   # Lion King, The
-        858,   # Godfather
         924,   # 2001: A Space Odyssey
         1198,  # Raiders of the Lost Arch
         1206,  # Clockwork Orange, A
-        #1219,  # Psycho
-        1221,  # Godfather II
         1291,  # Indiana Jones and the Last Crusade
         1721,  # Titanic
         2115,  # Indiana Jones and the Last Crusade
         2116,  # Lord of the Rings, The
         2571,  # Matrix
-        2858,  # American Beauty
-        3527,  # Predator
         3535,  # American Psycho
+        1676,  # Starship Troopers (1997)
     ]
-    utils.plot_movies(m.X, movies, picked_movies, title=title)
+    #utils.plot_movies(m.X, movies, picked_movies, title=title)
+
+    genres = {'Action', 'Adventure', 'Animation', "Children's",
+              'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy',
+              'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance',
+              'Sci-Fi', 'Thriller', 'War', 'Western'}
+
+    kubrick = [2727, 2726, 1178, 2728, 2729, 750, 924, 1206, 2730, 1258, 1222, 2712]
+    spielberg = [1693, 2028, 480, 527, 2115, 1291, 1198, 1097, 1387, 3471]
+    fincher = [1320, 47, 1625, 2959]
+    scorsese = [111, 1213, 1343, 16, 1228, 412, 2022, 2976, 1730]
+    tarantino = [1089, 555, 288, 296, 18, 1729]
+
 
     # Learning curves
     #learning_curves = utils.get_learning_curves(m, train, test)
